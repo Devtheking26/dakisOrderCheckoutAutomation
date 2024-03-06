@@ -1,10 +1,12 @@
-How to use DakisOrderheckout.py
+# How to use DakisOrderheckout.py
 
 
-1. Open Dakis and make sure there are no popups
-2. Run the program
-3. While in the program window follow the prompts
-4. When finished scanning in the Orders type n and press enter
-5. Watch the orders get checked out
+1. Open Dakis and make sure there are no popup windows.
+2. Wait until Get and AutoCheck on the Dakis Job Downloader software are not greyed out.
+3. Start the checkout automation software.
+4. Follow the prompts in the program window
+5. Scan in all order numbers. **Only use the Order ID barcode**
+6. When finished scanning in the orders type n and press enter.
+7. Watch the orders get checked out.
 
 **Note: It is very possible weird things will happen if you scan something wrong**
