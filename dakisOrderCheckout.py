@@ -40,7 +40,7 @@ def multi_order_checkout():
     order_list = set()
     order_number = input("Scan OrderNumber: ")
     while order_number.lower() != "n":
-        if len(order_number) == 8 and order_number[0] != ".":
+        if len(order_number) == 8 and order_number[0] != "." and order_number > 40000000:
             order_list.add(order_number)
         else:
             print("Incorrect order #. Please make sure you are using the correct dakis number and not a bag number.")
