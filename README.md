@@ -9,6 +9,4 @@
 6. When finished scanning in the orders type n and press enter.
 7. Watch the orders get checked out.
 
-Duplicate orders will no longer show.
-
 **Note: It is very possible weird things will happen if you scan something wrong**
