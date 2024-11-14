@@ -64,13 +64,22 @@ def multi_order_checkout():
     for order in order_list:
         checkout_orders(order)
         #time.sleep(1)
+def checkout_assist(order_number):
+    open_find() #open find menu 
+    time.sleep(.2)
+    pyautogui.write(order_number) #Input order number
+    pyautogui.press('enter') #press enter
+    time.sleep(.4)
+    mark_order() #Open mark order menu
+    mark_as_done() #Click done button
+    correctWindow = getActiveWindow()
 
 def checkout_orders(order_number):
     open_find() #open find menu 
     time.sleep(.2)
     pyautogui.write(order_number) #Input order number
     pyautogui.press('enter') # DUH
-    time.sleep(1.4)
+    time.sleep(.4)
     mark_order() #Open mark order menu
     #time.sleep(0.5)
     mark_as_done() #Click done button
@@ -83,10 +92,13 @@ def checkout_orders(order_number):
         time.sleep(.5)
         delay = delay + 1
         if(delay >= 10): #if the window does not open the email message. 
-            pyautogui.alert(text='Error with checkout. Make sure the program is open then click OK', title='Dakis Error alert', button="OK")
-            delay = 5
-            mark_order() #Click mark order
-            mark_as_done()#C
+            input = pyautogui.confirm(text="Program cannot find email window or the correct order.\nTo retry press ok. Make sure the email window is opened and on top.\nPress cancel to move to next the order number if problem persists.", title='Program Error', buttons=['Ok','Cancel'])
+            if input == 'Ok':
+                delay = 5
+                checkout_assist(order_number)
+                
+            else:
+                break
     no_button()
 
 def main():
