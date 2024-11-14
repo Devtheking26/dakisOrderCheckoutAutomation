@@ -83,10 +83,11 @@ def checkout_orders(order_number):
         time.sleep(.5)
         delay = delay + 1
         if(delay >= 10): #if the window does not open the email message. 
-            pyautogui.alert(text='Error with checkout. Make sure the program is open then click OK', title='Dakis Error alert', button="OK")
-            delay = 5
-            mark_order() #Click mark order
-            mark_as_done()#C
+            input = pyautogui.confirm(text="Program cannot find email window or the correct order.\nTo retry press ok. Make sure the email window is opened and on top.\nPress cancel to end program if problem persists.", title='Program Error', buttons=['Ok','Cancel'])
+            if input == 'Ok':
+                delay = 5
+            else:
+                break
     no_button()
 
 def main():
