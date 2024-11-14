@@ -83,7 +83,7 @@ def checkout_orders(order_number):
         time.sleep(.5)
         delay = delay + 1
         if(delay >= 10): #if the window does not open the email message. 
-            input = pyautogui.confirm(text="Program cannot find email window or the correct order.\nTo retry press ok. Make sure the email window is opened and on top.\nPress cancel to end program if problem persists.", title='Program Error', buttons=['Ok','Cancel'])
+            input = pyautogui.confirm(text="Program cannot find email window or the correct order.\nTo retry press ok. Make sure the email window is opened and on top.\nPress cancel to move to next the order number if problem persists.", title='Program Error', buttons=['Ok','Cancel'])
             if input == 'Ok':
                 delay = 5
             else:
