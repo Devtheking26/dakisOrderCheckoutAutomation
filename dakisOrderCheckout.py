@@ -1,6 +1,6 @@
-import pyautogui
+import pyautogui # type: ignore
 import time
-import pygetwindow as gw   
+import pygetwindow as gw    # type: ignore
 
 def printWindowList():
     windList = gw.getAllTitles()
@@ -66,18 +66,27 @@ def multi_order_checkout():
         #time.sleep(1)
 
 def checkout_orders(order_number):
-    open_find()
+    open_find() #open find menu 
     time.sleep(.2)
-    pyautogui.write(order_number)
-    pyautogui.press('enter')
+    pyautogui.write(order_number) #Input order number
+    pyautogui.press('enter') # DUH
     time.sleep(1.4)
-    mark_order() 
+    mark_order() #Open mark order menu
     #time.sleep(0.5)
-    mark_as_done()
+    mark_as_done() #Click done button
     #time.sleep(3)
-    correctWindow = getActiveWindow()
+    correctWindow = getActiveWindow() # verify that dakis window is open 
+    delay = 0 #initalize delay veriable menu
+	
     while not correctWindow:
-        correctWindow = getActiveWindow()
+        correctWindow = getActiveWindow() #Wait for the "Dakis Job Downloader" (aka send email notification window) to open.
+        time.sleep(.5)
+        delay = delay + 1
+        if(delay >= 10): #if the window does not open the email message. 
+            pyautogui.alert(text='Error with checkout. Make sure the program is open then click OK', title='Dakis Error alert', button="OK")
+            delay = 5
+            mark_order() #Click mark order
+            mark_as_done()#C
     no_button()
 
 def main():
