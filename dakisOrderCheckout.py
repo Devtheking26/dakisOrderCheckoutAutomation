@@ -78,21 +78,36 @@ def multi_order_checkout():
     for dakis_order in dakis_order_list:
         checkout_orders(dakis_order)
         #time.sleep(1)
-    for accuTerm_order in accuTerm_order_list:
-        bag_checkout(accuTerm_order)
+        bag_checkout(accuTerm_order_list)
 
 
-def bag_checkout(order_number):
+def bag_checkout(order_list):
     try:
-        accutermButtonLocation = pyautogui.locateOnScreen('Accuterm image.png')
-        accutermButtonCenter = pyautogui.center(accutermButtonLocation)
+        accutermButtonCenter = pyautogui.locateCenterOnScreen('AccutermImage.png')
         pyautogui.click(accutermButtonCenter.x,accutermButtonCenter.y)
         
     except:
         response = pyautogui.confirm(text='An error has occured. Please try again or reset program', title='ERROR', buttons=['retry', 'exit'])
 
         if response == 'retry':
-            bag_checkout(order_number)
+            bag_checkout(order_list)
+
+    else:
+        user_id = pyautogui.prompt(text='Scan your accuTerm number or enter it manually (With a \'b\' at the end)', title='enter ID')
+        pyautogui.alert(text="Make sure that python is logged in correctly (new feature to fix this bug coming soon)")
+
+        if(user_id != None):
+            pyautogui.write(user_id)
+            
+            time.sleep(2)
+            for order in order_list:
+                pyautogui.write(order)
+                time.sleep(.5)
+                pyautogui.press('enter')
+                time.sleep(.5)
+            pyautogui.alert(text="DONE!!!!")
+            
+
         
 
 def checkout_assist(order_number):
@@ -133,7 +148,9 @@ def checkout_orders(order_number):
     no_button()
 
 def main():
-    test_find_accuterm()
+    
+    bag_checkout()
+    #test_find_accuterm()
     #multi_order_checkout()
     #testIO() 
 
