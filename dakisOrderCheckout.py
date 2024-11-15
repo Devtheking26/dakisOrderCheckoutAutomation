@@ -1,6 +1,7 @@
-import pyautogui # type: ignore
+import pyautogui 
 import time
-import pygetwindow as gw    # type: ignore
+import pygetwindow as gw
+import pyscreeze 
 
 def printWindowList():
     windList = gw.getAllTitles()
@@ -35,6 +36,10 @@ def get_cursor_coords():
         print("Mouse coordinates:", pyautogui.position())
         ans = input("Enter another variable? (Y/N)\n")
 
+def test_find_accuterm():
+     accutermButtonLocation = PyScreeze.locateOnScreen('Accuterm image.png')
+
+
 def open_find():
     pyautogui.click(x=1371, y=51)
 
@@ -52,18 +57,40 @@ def scanner_in():
     print(order_num)
 
 def multi_order_checkout():
-    order_list = set()
+    dakis_order_list = set()
+    accuTerm_order_list = set()
     order_number = input("Scan OrderNumber: ")
     while order_number.lower() != "n":
-        if len(order_number) == 8 and order_number[0] != "." and int(order_number) > 40000000:
-            order_list.add(order_number)
+        if len(order_number) == 8 and int(order_number) > 40000000:
+            dakis_order_list.add(order_number)
+
+        elif(order_number[0] != "."):
+            accuTerm_order_list.add(order_number)
+            
         else:
-            print("Incorrect order #. Please make sure you are using the correct dakis number and not a bag number.")
+            print("Incorrect order #. Please make sure you are using the correct order number.")
         order_number = input("Next Order Number (If finished press n ): ")
 
-    for order in order_list:
-        checkout_orders(order)
+    for dakis_order in dakis_order_list:
+        checkout_orders(dakis_order)
         #time.sleep(1)
+    for accuTerm_order in accuTerm_order_list:
+        bag_checkout(accuTerm_order)
+
+
+def bag_checkout(order_number):
+    try:
+        accutermButtonLocation = pyautogui.locateOnScreen('Accuterm image.png')
+        accutermButtonCenter = pyautogui.center(accutermButtonLocation)
+        pyautogui.click(accutermButtonCenter.x,accutermButtonCenter.y)
+        
+    except:
+        response = pyautogui.confirm(text='An error has occured. Please try again or reset program', title='ERROR', buttons=['retry', 'exit'])
+
+        if response == 'retry':
+            bag_checkout(order_number)
+        
+
 def checkout_assist(order_number):
     open_find() #open find menu 
     time.sleep(.2)
@@ -102,7 +129,8 @@ def checkout_orders(order_number):
     no_button()
 
 def main():
-    multi_order_checkout()
+    test_find_accuterm()
+    #multi_order_checkout()
     #testIO() 
 
 if __name__ == '__main__':
