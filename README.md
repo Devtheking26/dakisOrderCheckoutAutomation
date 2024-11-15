@@ -1,4 +1,4 @@
-# How to use DakisOrderheckout.py
+# How to use DakisOrderCheckout.py
 
 
 1. Open Dakis and make sure there are no popup windows.
