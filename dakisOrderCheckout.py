@@ -86,7 +86,7 @@ def get_id():
         id_length = len(user_id) 
 
         if id_length != 5:
-            user_id =input("Please enter a correct id. (ie : 1452b) ")
+            user_id = input("Please enter a correct id. (ie : 1452b) ")
         else:
             correctID = True
 
@@ -100,14 +100,20 @@ def multi_order_checkout():
     order_number = input("\nScan OrderNumber: ")
     while order_number.lower() != "n":
         
-        if(order_number[0] == "."):
+        if(order_number[0] == "." and str(order_number[2]) == '1'):
             accuTerm_order_list.add(order_number)
+
+        elif order_number[0] == "." and str(order_number[2]) != '1':
+            ans = pyautogui.confirm(text="This order belongs to a different store. Are you sure you want to check it out?", title='Wrong Store Error', buttons=['Yes','No'])
+            if ans == 'Yes':
+                accuTerm_order_list.add(order_number)
 
         elif len(order_number) == 8 and int(order_number) > 40000000:
             dakis_order_list.add(order_number)
 
         else:
             print("Incorrect order #. Please make sure you are using the correct order number.")
+
         order_number = input("Next Order Number (If finished press n ): ")
 
     for dakis_order in dakis_order_list:
