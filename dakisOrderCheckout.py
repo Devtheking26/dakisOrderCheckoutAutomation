@@ -119,7 +119,9 @@ def multi_order_checkout():
     for dakis_order in dakis_order_list:
         checkout_orders(dakis_order)
         #time.sleep(1)
-    bag_checkout(accuTerm_order_list, user_id)
+    if(len(accuTerm_order_list) > 0):
+        bag_checkout(accuTerm_order_list, user_id)
+    
 
 def bag_checkout(order_list, user_id):
     open_accuterm()
