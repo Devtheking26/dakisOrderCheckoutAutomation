@@ -31,14 +31,18 @@ def getActiveWindow():
         return False      
 
 def get_cursor_coords():
-    ans = input("Ready for coordinates? (Y/N) ")
-    while ans.lower() == "y":
-        print("Mouse coordinates:", pyautogui.position())
-        ans = input("Enter another variable? (Y/N)\n")
+    i = 0
+    while i < 4:
+        time.sleep(2)
+        pos = pyautogui.position()
+        print(pos)
+        i = i+1
 
 def test_find_accuterm():
-     accutermButtonLocation = pyscreeze.locateOnScreen('Accuterm image.png')
-
+    #img1 = pyautogui.screenshot('bro.png',region=[1095,1030,44,50]) How to create an image that is searchable. (I think the screenshot data is transferred correctly using this)
+    accutermCenter = pyautogui.locateCenterOnScreen('AccutermImage.png')
+    pyautogui.click(accutermCenter.x, accutermCenter.y)
+ #It fucking works!!!!!!!!
 
 def open_find():
     pyautogui.click(x=1371, y=51)
