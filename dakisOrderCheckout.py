@@ -21,7 +21,6 @@ def testIO():
         print(order)
         #time.sleep(1)
 
-
 def getActiveWindow():
     WindowName ='Dakis Job Downloader'
     currentWindow = gw.getActiveWindowTitle()
@@ -38,11 +37,22 @@ def get_cursor_coords():
         print(pos)
         i = i+1
 
-def test_find_accuterm():
-    #img1 = pyautogui.screenshot('bro.png',region=[1095,1030,44,50]) How to create an image that is searchable. (I think the screenshot data is transferred correctly using this)
-    accutermCenter = pyautogui.locateCenterOnScreen('AccutermImage.png')
-    pyautogui.click(accutermCenter.x, accutermCenter.y)
- #It fucking works!!!!!!!!
+def create_screenshot():
+    time.sleep(3)
+    screenshot = pyautogui.screenshot('AccutermImage.png')
+    
+def open_accuterm():
+
+    #img1 = pyautogui.screenshot('bro.png',region=[1095,1030,44,50]) How to create an image that is searchable. (I think the screenshot data is transferred correctly using this)   
+    pyautogui.press('win')
+    time.sleep(.3)
+    pyautogui.write('Accuterm 7')
+    time.sleep(.1)
+    pyautogui.press('enter')
+    time.sleep(1)
+ #   accutermLocation = pyautogui.locateOnScreen('AccutermImage.png')
+ #   accutermCenter= pyautogui.center(accutermLocation)
+ #   pyautogui.click(accutermCenter.x, accutermCenter.y)
 
 def open_find():
     pyautogui.click(x=1371, y=51)
@@ -60,17 +70,42 @@ def scanner_in():
     order_num = input("Enter order number: ")
     print(order_num)
 
+def test_list():
+    orders = set()
+    order = input("scan order num\n")
+    while order.lower() != "n":
+        orders.add(order)
+        order = input("scan order num\n")
+
+    return orders
+
+def get_id():
+    correctID = False
+    user_id = input("Enter your user ID with a B at the end: ")
+    while not correctID:
+        id_length = len(user_id) 
+
+        if id_length != 5:
+            user_id =input("Please enter a correct id. (ie : 1452b) ")
+        else:
+            correctID = True
+
+    return user_id
+
 def multi_order_checkout():
     dakis_order_list = set()
     accuTerm_order_list = set()
-    order_number = input("Scan OrderNumber: ")
+    user_id = get_id()
+        
+    order_number = input("\nScan OrderNumber: ")
     while order_number.lower() != "n":
-        if len(order_number) == 8 and int(order_number) > 40000000:
+        
+        if(order_number[0] == "."):
+            accuTerm_order_list.add(order_number)
+
+        elif len(order_number) == 8 and int(order_number) > 40000000:
             dakis_order_list.add(order_number)
 
-        elif(order_number[0] != "."):
-            accuTerm_order_list.add(order_number)
-            
         else:
             print("Incorrect order #. Please make sure you are using the correct order number.")
         order_number = input("Next Order Number (If finished press n ): ")
@@ -78,38 +113,25 @@ def multi_order_checkout():
     for dakis_order in dakis_order_list:
         checkout_orders(dakis_order)
         #time.sleep(1)
-        bag_checkout(accuTerm_order_list)
+    bag_checkout(accuTerm_order_list, user_id)
 
+def bag_checkout(order_list, user_id):
+    open_accuterm()
 
-def bag_checkout(order_list):
-    try:
-        accutermButtonCenter = pyautogui.locateCenterOnScreen('AccutermImage.png')
-        pyautogui.click(accutermButtonCenter.x,accutermButtonCenter.y)
-        
-    except:
-        response = pyautogui.confirm(text='An error has occured. Please try again or reset program', title='ERROR', buttons=['retry', 'exit'])
-
-        if response == 'retry':
-            bag_checkout(order_list)
-
-    else:
-        user_id = pyautogui.prompt(text='Scan your accuTerm number or enter it manually (With a \'b\' at the end)', title='enter ID')
-        pyautogui.alert(text="Make sure that python is logged in correctly (new feature to fix this bug coming soon)")
-
-        if(user_id != None):
-            pyautogui.write(user_id)
+    if(user_id != None):
+        pyautogui.write(user_id)
+        pyautogui.press('enter')
             
-            time.sleep(2)
-            for order in order_list:
+        time.sleep(2)
+        for order in order_list:
                 pyautogui.write(order)
                 time.sleep(.5)
                 pyautogui.press('enter')
-                time.sleep(.5)
-            pyautogui.alert(text="DONE!!!!")
+        time.sleep(.5)
+        pyautogui.write('0')
+        pyautogui.press('enter')
+        pyautogui.alert(text="DONE!!!!")
             
-
-        
-
 def checkout_assist(order_number):
     open_find() #open find menu 
     time.sleep(.2)
@@ -148,10 +170,7 @@ def checkout_orders(order_number):
     no_button()
 
 def main():
-    
-    bag_checkout()
-    #test_find_accuterm()
-    #multi_order_checkout()
+    multi_order_checkout()
     #testIO() 
 
 if __name__ == '__main__':
