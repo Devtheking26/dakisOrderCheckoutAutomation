@@ -37,7 +37,7 @@ def get_cursor_coords():
         ans = input("Enter another variable? (Y/N)\n")
 
 def test_find_accuterm():
-     accutermButtonLocation = PyScreeze.locateOnScreen('Accuterm image.png')
+     accutermButtonLocation = pyscreeze.locateOnScreen('Accuterm image.png')
 
 
 def open_find():
