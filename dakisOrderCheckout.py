@@ -3,9 +3,12 @@ import time
 import pygetwindow as gw
 import pyscreeze 
 
-def printWindowList():
+class WindowNotFound(Exception):
+    pass
+
+def getWindowList():
     windList = gw.getAllTitles()
-    print(windList)
+    return windList
 
 def testIO():
     order_list = set()
@@ -63,6 +66,23 @@ def mark_order():
 def mark_as_done():
     pyautogui.click(x=819, y=83)
 
+def get_dakis_window():
+    currentWindow = gw.getActiveWindow().title    
+    found = False
+    for i in range(10):
+        if currentWindow[0:20] == 'Dakis Job Downloader':
+            print("Deez")
+            found = True
+            break
+        else:
+            pyautogui.keyDown('alt')
+            pyautogui.press('tab',presses=i)
+            pyautogui.keyUp('alt')
+        currentWindow = gw.getActiveWindow().title
+
+    if not found:
+        raise WindowNotFound("Could Not Find Dakis Window")   
+            
 def no_button():
     pyautogui.click(x=1158, y=551)
 
@@ -120,8 +140,7 @@ def multi_order_checkout():
         checkout_orders(dakis_order)
         #time.sleep(1)
     if(len(accuTerm_order_list) > 0):
-        bag_checkout(accuTerm_order_list, user_id)
-    
+        bag_checkout(accuTerm_order_list, user_id)  
 
 def bag_checkout(order_list, user_id):
     open_accuterm()
@@ -151,6 +170,8 @@ def checkout_assist(order_number):
     correctWindow = getActiveWindow()
 
 def checkout_orders(order_number):
+    get_dakis_window()
+
     open_find() #open find menu 
     time.sleep(.2)
     pyautogui.write(order_number) #Input order number
@@ -178,6 +199,7 @@ def checkout_orders(order_number):
     no_button()
 
 def main():
+    #get_dakis_window()
     multi_order_checkout()
     #testIO() 
 
