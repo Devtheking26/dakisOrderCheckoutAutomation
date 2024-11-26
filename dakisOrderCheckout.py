@@ -41,7 +41,7 @@ def select_function():
             else:
                 print('Accuterm backup is empty')
                 
-        elif file_choice == 0:
+        elif file_choice == '0':
             valid_choice = True
 	
         else: #User input incorrect
