@@ -24,26 +24,14 @@ def write_backup_files(dakisList, accutermList): #Can be directly imported to th
 def select_function():
     user_id = get_id()
     valid_choice = False
-    file_choice = input("Select a operation type:\n\nPress Enter for Standard Operation.\nPress 2 for Dakis backup only\nPress 3 for accuterm backup only.\nPress 4 for both backups.\nPress 0 to cancel. \n\nEnter Selection: ")
+    file_choice = input("Select a operation type:\n\nPress Enter for Standard Operation.\n\nPress 2 for accuterm backup only.\nPress 0 to cancel. \n\nEnter Selection: ")
     
     while not valid_choice:
         if file_choice == '': #Standard order operation
             valid_choice = True
             multi_order_checkout(user_id)
             
-        elif file_choice == '2': #Dakis backup proccess
-            
-            valid_choice = True
-            blist = get_list("dakis_backup")
-            if len(blist) > 0:
-                for order in blist:
-                    checkout_orders(order)
-                    print("Choice 2: printing ", order)
-
-            else:
-                print("Dakis backup is empty")
-            
-        elif file_choice == '3': #Accuterm backup proccess
+        elif file_choice == '2': #Accuterm backup proccess
             valid_choice = True
             blist = get_list("accuterm_backup")
 
@@ -52,23 +40,9 @@ def select_function():
                 print("Choice 3: ", blist)
             else:
                 print('Accuterm backup is empty')
-            
-        elif file_choice == "4": # Double backup entry
-            valid_choice = True
-            dlist = get_list("dakis_backup")
-            alist = get_list("accuterm_backup")
-            
-            if len(dlist) > 0 or len(alist) > 0:
-                for order in dlist:
-                    checkout_orders(order)
-
-                bag_checkout(alist, user_id)
-            else:
-                print("Both lists empty")
 
         else: #User input incorrect
-            file_choice = input("Select a operation type:\nPress Enter for Standard Operation.\nPress 2 for Dakis backup only\nPress 3 for accuterm backup only.\nPress 4 for both backups.\nPress 0 to cancel. \n\nEnter Selection: ")
-    print("Done!")
+            file_choice = input("Select a operation type:\n\nPress Enter for Standard Operation.\n\nPress 2 for accuterm backup only.\nPress 0 to cancel. \n\nEnter Selection: ")
 
 def get_list(fileName):
     new_list = set()
