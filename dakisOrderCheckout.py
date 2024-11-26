@@ -6,6 +6,77 @@ import pyscreeze
 class WindowNotFound(Exception):
     pass
 
+
+def write_backup_files(dakisList, accutermList): #Can be directly imported to the program.
+    f1 = open("accuterm_backup",'w')
+    f2 = open("dakis_backup",'w')
+
+    for order in dakisList:
+        order = order +'\n'
+        f2.write(order)
+
+    for order in accutermList:
+        order = order +'\n'
+        f1.write(order)
+    f1.close
+    f2.close
+
+def select_function():
+    user_id = get_id()
+    valid_choice = False
+    file_choice = input("Select a operation type:\n\nPress Enter for Standard Operation.\nPress 2 for Dakis backup only\nPress 3 for accuterm backup only.\nPress 4 for both backups.\nPress 0 to cancel. \n\nEnter Selection: ")
+    
+    while not valid_choice:
+        if file_choice == '': #Standard order operation
+            valid_choice = True
+            multi_order_checkout(user_id)
+            
+        elif file_choice == '2': #Dakis backup proccess
+            
+            valid_choice = True
+            blist = get_list("dakis_backup")
+            if len(blist) > 0:
+                for order in blist:
+                    checkout_orders(order)
+                    print("Choice 2: printing ", order)
+
+            else:
+                print("Dakis backup is empty")
+            
+        elif file_choice == '3': #Accuterm backup proccess
+            valid_choice = True
+            blist = get_list("accuterm_backup")
+
+            if len(blist) > 0:
+                bag_checkout(blist, user_id)
+                print("Choice 3: ", blist)
+            else:
+                print('Accuterm backup is empty')
+            
+        elif file_choice == "4": # Double backup entry
+            valid_choice = True
+            dlist = get_list("dakis_backup")
+            alist = get_list("accuterm_backup")
+            
+            if len(dlist) > 0 or len(alist) > 0:
+                for order in dlist:
+                    checkout_orders(order)
+
+                bag_checkout(alist, user_id)
+            else:
+                print("Both lists empty")
+
+        else: #User input incorrect
+            file_choice = input("Select a operation type:\nPress Enter for Standard Operation.\nPress 2 for Dakis backup only\nPress 3 for accuterm backup only.\nPress 4 for both backups.\nPress 0 to cancel. \n\nEnter Selection: ")
+    print("Done!")
+
+def get_list(fileName):
+    new_list = set()
+    f = open(str(fileName),"r")
+    for line in f:
+        new_list.add(line[:-1])
+    return new_list
+
 def getWindowList():
     windList = gw.getAllTitles()
     return windList
@@ -112,10 +183,9 @@ def get_id():
 
     return user_id
 
-def multi_order_checkout():
+def multi_order_checkout(user_id):
     dakis_order_list = set()
     accuTerm_order_list = set()
-    user_id = get_id()
         
     order_number = input("\nScan OrderNumber: ")
     while order_number.lower() != "n":
@@ -135,6 +205,8 @@ def multi_order_checkout():
             print("Incorrect order #. Please make sure you are using the correct order number.")
 
         order_number = input("Next Order Number (If finished press n ): ")
+    
+    write_backup_files(dakis_order_list,accuTerm_order_list)
 
     for dakis_order in dakis_order_list:
         checkout_orders(dakis_order)
@@ -152,7 +224,7 @@ def bag_checkout(order_list, user_id):
         time.sleep(2)
         for order in order_list:
                 pyautogui.write(order)
-                time.sleep(.5)
+                #time.sleep(.5)
                 pyautogui.press('enter')
         time.sleep(.5)
         pyautogui.write('0')
@@ -199,9 +271,6 @@ def checkout_orders(order_number):
     no_button()
 
 def main():
-    #get_dakis_window()
-    multi_order_checkout()
-    #testIO() 
-
+    select_function()
 if __name__ == '__main__':
     main()
