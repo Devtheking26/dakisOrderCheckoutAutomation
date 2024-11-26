@@ -40,7 +40,10 @@ def select_function():
                 print("Choice 3: ", blist)
             else:
                 print('Accuterm backup is empty')
-
+                
+        elif file_choice == 0:
+            valid_choice = True
+	
         else: #User input incorrect
             file_choice = input("Select a operation type:\n\nPress Enter for Standard Operation.\n\nPress 2 for accuterm backup only.\nPress 0 to cancel. \n\nEnter Selection: ")
 
