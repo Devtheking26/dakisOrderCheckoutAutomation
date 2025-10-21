@@ -2,7 +2,7 @@ import pyautogui
 import time
 import pygetwindow as gw
 import pyscreeze
-from playsound import playsound
+import winsound
 
 class WindowNotFound(Exception):
     pass
@@ -168,15 +168,11 @@ def get_dakis_window():
         currentWindow = gw.getActiveWindow().title
 
     if not found:
-        raise WindowNotFound("Could Not Find Dakis Window") #Fix this to keep from crashing when dakis window is not found
 
-        #input = pyautogui.confirm(text="Cannot find Dakis Window. Open Dakis and Click Ok", title='Program Error', buttons=['Ok','Cancel'])
+        input = pyautogui.confirm(text="Cannot find Dakis Window. Open Dakis and Click Ok", title='Program Error', buttons=['Ok','Cancel'])
 
-        #if input == "ok":
-
-        #    get_dakis_window()
-
-           
+        if input == "ok":
+            get_dakis_window()      
             
 def no_button():
     pyautogui.click(x=1158, y=551)
@@ -226,8 +222,9 @@ def multi_order_checkout(user_id):
             accuTerm_order_list.add(order_number)
 
         elif order_number[0] == "." and str(order_number[2]) != '1':
+            winsound.PlaySound('alert.wav',winsound.SND_FILENAME)
             ans = pyautogui.confirm(text="This order belongs to a different store. Are you sure you want to check it out?", title='Wrong Store Error', buttons=['Yes','No'])
-            playsound('alert.mp3')
+            
             if ans == 'Yes':
                 accuTerm_order_list.add(order_number)
 
