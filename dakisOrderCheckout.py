@@ -1,7 +1,8 @@
 import pyautogui 
 import time
 import pygetwindow as gw
-import pyscreeze 
+import pyscreeze
+from playsound import playsound
 
 class WindowNotFound(Exception):
     pass
@@ -226,6 +227,7 @@ def multi_order_checkout(user_id):
 
         elif order_number[0] == "." and str(order_number[2]) != '1':
             ans = pyautogui.confirm(text="This order belongs to a different store. Are you sure you want to check it out?", title='Wrong Store Error', buttons=['Yes','No'])
+            playsound('alert.mp3')
             if ans == 'Yes':
                 accuTerm_order_list.add(order_number)
 
