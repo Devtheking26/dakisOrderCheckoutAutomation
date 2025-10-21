@@ -1,0 +1,25 @@
+Stats started 7/31/25
+Ended 9/1/2025
+
+Total 2393
+
+Total days 33
+
+Avg 72.5 orders checked out per day.
+
+For Dakis orders avg time to checkout is around 15 seconds.
+For Accuterm orders avg checkout time is around 30 seconds(with start up) and 8 seconds without.
+
+A rough combined time to checkout 4 orders (2 dakis  & 2 accuterm) is 26 seconds.
+Using the program it takes 12 seconds to check out 4 orders (2 dakis  & 2 accuterm).
+
+72.5 * 26 = 1,885 seconds to checkout 72.5 orders (about 31.42 minutes)
+Compared to 72.5 * 12 = 870 seconds using the program 14.5 minutes to checkout the same amount of orders
+A rough savings of 16.92 minutes on average.
+
+478.6 Minutes total using the program compared to 1037 Minutes of time manually checking out orders.
+
+558.4 Minutes of time saved. About 9 hours in a month. (This is a conservative estimate) 
+
+Overall the addition of the checkout program combined with the scanners saves well over 9 hours a month.
+

@@ -6,20 +6,39 @@ import pyscreeze
 class WindowNotFound(Exception):
     pass
 
+def total_count(count): #counts all orders checkout using program ERROR No Such directory.
+    
+    with open("total_orders",'r+') as f3:
+        current_num = f3.read()
+        if current_num == "":
+            f3.write(str(count))
+            f3.truncate()
+            
+        else:
+            total = int(count) + int(current_num)
+            f3.seek(0)
+            f3.write(str(total))
+            f3.truncate()
 
 def write_backup_files(dakisList, accutermList): #Can be directly imported to the program.
     f1 = open("accuterm_backup",'w')
     f2 = open("dakis_backup",'w')
+    count = 0
+
 
     for order in dakisList:
         order = order +'\n'
         f2.write(order)
+        count+=1
 
     for order in accutermList:
         order = order +'\n'
         f1.write(order)
-    f1.close
-    f2.close
+        count+=1
+    f1.close()
+    f2.close()
+    
+    #total_count(count) Currently broken
 
 def select_function():
     user_id = get_id()
@@ -40,9 +59,28 @@ def select_function():
                 print("Choice 3: ", blist)
             else:
                 print('Accuterm backup is empty')
+
+        elif file_choice == '3': #Dakis backup proccess
+            valid_choice = True
+            blist = get_list("dakis_backup")
+
+            if len(blist) > 0:
+                archive_dakis_checkout(blist)
+                print("Choice 3: ", blist)
+            else:
+                print('Dakis backup is empty')
                 
         elif file_choice == '0':
+            #get_cursor_coords()
             valid_choice = True
+            
+        elif file_choice == "4":
+            valid_choice = True
+            print(getWindowList())
+
+        elif file_choice == 'E':
+            valid_choice = True
+            break
 	
         else: #User input incorrect
             file_choice = input("Select a operation type:\n\nPress Enter for Standard Operation.\n\nPress 2 for accuterm backup only.\nPress 0 to cancel. \n\nEnter Selection: ")
@@ -80,7 +118,7 @@ def getActiveWindow():
     else:
         return False      
 
-def get_cursor_coords():
+def get_cursor_coords(): #gets X,Y Coordinates of the cursors current location
     i = 0
     while i < 4:
         time.sleep(2)
@@ -88,7 +126,7 @@ def get_cursor_coords():
         print(pos)
         i = i+1
 
-def create_screenshot():
+def create_screenshot(): #Captures a screenshot of the screen
     time.sleep(3)
     screenshot = pyautogui.screenshot('AccutermImage.png')
     
@@ -106,7 +144,7 @@ def open_accuterm():
  #   pyautogui.click(accutermCenter.x, accutermCenter.y)
 
 def open_find():
-    pyautogui.click(x=1371, y=51)
+    pyautogui.click(x=1375, y=48) #x=1371, y=51 og
 
 def mark_order():
     pyautogui.click(x=796, y=43)
@@ -129,7 +167,15 @@ def get_dakis_window():
         currentWindow = gw.getActiveWindow().title
 
     if not found:
-        raise WindowNotFound("Could Not Find Dakis Window")   
+        raise WindowNotFound("Could Not Find Dakis Window") #Fix this to keep from crashing when dakis window is not found
+
+        #input = pyautogui.confirm(text="Cannot find Dakis Window. Open Dakis and Click Ok", title='Program Error', buttons=['Ok','Cancel'])
+
+        #if input == "ok":
+
+        #    get_dakis_window()
+
+           
             
 def no_button():
     pyautogui.click(x=1158, y=551)
@@ -160,6 +206,11 @@ def get_id():
 
     return user_id
 
+def archive_dakis_checkout(list):
+    for dakis_order in list:
+        checkout_orders(dakis_order)
+        #time.sleep(1)
+
 def multi_order_checkout(user_id):
     dakis_order_list = set()
     accuTerm_order_list = set()
@@ -167,7 +218,10 @@ def multi_order_checkout(user_id):
     order_number = input("\nScan OrderNumber: ")
     while order_number.lower() != "n":
         
-        if(order_number[0] == "." and str(order_number[2]) == '1'):
+        if(order_number == '' or len(order_number)<7):
+            print("Please enter a correct value\n")
+        
+        elif(order_number[0] == "." and str(order_number[2]) == '1'):
             accuTerm_order_list.add(order_number)
 
         elif order_number[0] == "." and str(order_number[2]) != '1':
@@ -248,6 +302,7 @@ def checkout_orders(order_number):
     no_button()
 
 def main():
+    #get_cursor_coords()
     select_function()
 if __name__ == '__main__':
     main()
